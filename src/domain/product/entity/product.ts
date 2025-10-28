@@ -47,7 +47,6 @@ export default class Product {
   }
 
   static create(
-    productId: string,
     name: string,
     description: string,
     type: string,
@@ -60,6 +59,7 @@ export default class Product {
     expiresAt?: Date,
     imageUrl?: string
   ) {
+    const productId = UUID.create().getValue()
     return new Product(
       productId,
       name,
