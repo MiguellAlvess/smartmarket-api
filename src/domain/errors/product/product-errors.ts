@@ -23,3 +23,9 @@ export class InvalidExpirationDateError extends DomainError {
     super("Invalid expiration date")
   }
 }
+
+export class InvalidPromotionError extends DomainError {
+  constructor() {
+    super("Invalid promotion")
+  }
+}
