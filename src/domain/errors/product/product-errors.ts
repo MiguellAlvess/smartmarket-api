@@ -29,3 +29,9 @@ export class InvalidPromotionError extends DomainError {
     super("Invalid promotion")
   }
 }
+
+export class InvalidUUIDError extends DomainError {
+  constructor() {
+    super("Invalid UUID")
+  }
+}
