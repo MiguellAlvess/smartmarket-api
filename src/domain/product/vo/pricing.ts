@@ -27,4 +27,24 @@ export default class Pricing {
     this.promoStartsAt = promoStartsAt
     this.promoEndsAt = promoEndsAt
   }
+
+  getPriceInCents() {
+    return this.priceInCents
+  }
+
+  getPromoInCents() {
+    return this.promoInCents
+  }
+
+  isPromoActive() {
+    return this.promoActive
+  }
+
+  getPromoStartsAt() {
+    return this.promoStartsAt
+  }
+
+  getPromoEndsAt() {
+    return this.promoEndsAt
+  }
 }
