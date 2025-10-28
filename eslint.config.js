@@ -27,5 +27,15 @@ export default defineConfig([
       ],
     },
   },
+  {
+    files: ["**/*.test.{ts,js}", "**/*.spec.{ts,js}"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.vitest,
+      },
+    },
+  },
+
   eslintConfigPrettier,
 ])
