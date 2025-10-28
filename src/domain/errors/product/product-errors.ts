@@ -47,3 +47,9 @@ export class InvalidPromotionStateError extends DomainError {
     super("Invalid promotion state")
   }
 }
+
+export class InvalidQuantityError extends DomainError {
+  constructor() {
+    super("Invalid quantity")
+  }
+}
