@@ -37,8 +37,8 @@ model Product {
   name          String
   description   String
   type          ProductType @default(OTHER)
-  price         Decimal     @db.Decimal(10, 2)
-  promoPrice    Decimal?    @db.Decimal(10, 2)
+  priceInCents  Int
+  promoInCents  Int?
   promoActive   Boolean     @default(false)
   promoStartsAt DateTime?
   promoEndsAt   DateTime?
