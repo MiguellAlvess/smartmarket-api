@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  STAFF
+}
+
+enum ProductType {
+  FOOD
+  BEVERAGE
+  CLEANING
+  HYGIENE
+  OTHER
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  cpf          String   @unique
+  passwordHash String
+  role         Role     @default(STAFF)
+  imageUrl     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Product {
+  id            Int         @id @default(autoincrement())
+  name          String
+  description   String
+  type          ProductType @default(OTHER)
+  price         Decimal     @db.Decimal(10, 2)
+  promoPrice    Decimal?    @db.Decimal(10, 2)
+  promoActive   Boolean     @default(false)
+  promoStartsAt DateTime?
+  promoEndsAt   DateTime?
+  expiresAt     DateTime?
+  imageUrl      String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model Customer {
+  id            Int      @id @default(autoincrement())
+  name          String
+  cpf           String   @unique
+  age           Int
+  customerSince DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
