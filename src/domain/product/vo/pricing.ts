@@ -6,23 +6,23 @@ import Price from "./price.js"
 
 export default class Pricing {
   private priceInCents: Price
-  private promoPrice?: Price
+  private promoInCents?: Price
   private promoActive: boolean
   private promoStartsAt?: Date
   private promoEndsAt?: Date
 
   constructor(
     priceInCents: Price,
-    promoPrice?: Price,
+    promoInCents?: Price,
     promoActive = false,
     promoStartsAt?: Date,
     promoEndsAt?: Date
   ) {
-    if (promoActive && !promoPrice) throw new InvalidPromotionStateError()
+    if (promoActive && !promoInCents) throw new InvalidPromotionStateError()
     if (promoStartsAt && promoEndsAt && promoStartsAt > promoEndsAt)
       throw new InvalidPromoPeriodError()
     this.priceInCents = priceInCents
-    this.promoPrice = promoPrice
+    this.promoInCents = promoInCents
     this.promoActive = promoActive
     this.promoStartsAt = promoStartsAt
     this.promoEndsAt = promoEndsAt
