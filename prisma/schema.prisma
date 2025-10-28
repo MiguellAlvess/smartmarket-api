@@ -21,7 +21,7 @@ enum ProductType {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
+  id           String   @id @default(uuid())
   name         String
   email        String   @unique
   cpf          String   @unique
@@ -33,7 +33,7 @@ model User {
 }
 
 model Product {
-  id            Int         @id @default(autoincrement())
+  id            String      @id @default(uuid())
   name          String
   description   String
   type          ProductType @default(OTHER)
@@ -44,12 +44,16 @@ model Product {
   promoEndsAt   DateTime?
   expiresAt     DateTime?
   imageUrl      String?
+  stockQuantity Int         @default(0)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+
+  @@index([name])
+  @@index([type])
 }
 
 model Customer {
-  id            Int      @id @default(autoincrement())
+  id            String   @id @default(uuid())
   name          String
   cpf           String   @unique
   age           Int
