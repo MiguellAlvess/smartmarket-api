@@ -3,21 +3,18 @@ import Product from "../../../src/domain/product/entity/product.js"
 describe("Product Entity", () => {
   it("should create a valid product", () => {
     const product = Product.create(
-      "123e4567-e89b-12d3-a456-426614174000",
-      "Sample Product",
-      "This is a sample product description.",
+      "Product",
+      "This is a sample product",
       "OTHER",
-      10000,
-      8000,
+      2000,
+      1500,
       true,
-      new Date("2026-01-01"),
-      new Date("2026-01-31"),
+      new Date("2024-08-01"),
+      new Date("2024-08-31"),
       50,
-      new Date("2026-01-01"),
-      "http://example.com/image.jpg"
+      new Date("2025-12-31")
     )
-
-    expect(product.getName()).toBe("Sample Product")
+    expect(product.getName()).toBe("Product")
     expect(product.isPromoActive()).toBe(true)
   })
 })
