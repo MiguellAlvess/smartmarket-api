@@ -14,7 +14,6 @@ export default class Product {
   private pricing: Pricing
   private expiresAt?: ExpiresAt
   private stock: Quantity
-  private imageUrl?: string
 
   constructor(
     productId: string,
@@ -27,8 +26,7 @@ export default class Product {
     promoStartsAt: Date | undefined,
     promoEndsAt: Date | undefined,
     stock: number,
-    expiresAt?: Date,
-    imageUrl?: string
+    expiresAt?: Date
   ) {
     this.productId = new UUID(productId)
     this.name = new Name(name)
@@ -43,7 +41,6 @@ export default class Product {
     )
     this.expiresAt = expiresAt ? new ExpiresAt(expiresAt) : undefined
     this.stock = new Quantity(stock)
-    this.imageUrl = imageUrl
   }
 
   static create(
@@ -56,8 +53,7 @@ export default class Product {
     promoStartsAt: Date | undefined,
     promoEndsAt: Date | undefined,
     stock: number,
-    expiresAt?: Date,
-    imageUrl?: string
+    expiresAt?: Date
   ) {
     const productId = UUID.create().getValue()
     return new Product(
@@ -71,10 +67,10 @@ export default class Product {
       promoStartsAt,
       promoEndsAt,
       stock,
-      expiresAt,
-      imageUrl
+      expiresAt
     )
   }
+
   getId() {
     return this.productId.getValue()
   }
@@ -117,9 +113,5 @@ export default class Product {
 
   getStockQuantity() {
     return this.stock.getValue()
-  }
-
-  getImageUrl() {
-    return this.imageUrl
   }
 }

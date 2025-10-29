@@ -1,20 +1,10 @@
-import { stringify } from "querystring"
-
 import Product from "../../../domain/product/entity/product.js"
 import { ProductRepository } from "../../ports/repository/product-repository.js"
-import { PhotoInput, PhotoStorage } from "../../ports/storage/photo-storage.js"
 
 export default class CreateProduct {
-  constructor(
-    private readonly productRepository: ProductRepository,
-    private readonly photoStorage: PhotoStorage
-  ) {}
+  constructor(private readonly productRepository: ProductRepository) {}
 
   async execute(input: Input): Promise<Output> {
-    let photoUrl: string | undefined
-    if (input.imageUrl) {
-      photoUrl = await this.photoStorage.upload(input.imageUrl)
-    }
     const product = Product.create(
       input.name,
       input.description,
@@ -25,8 +15,7 @@ export default class CreateProduct {
       input.promoStartsAt,
       input.promoEndsAt,
       input.stockQuantity,
-      input.expiresAt,
-      photoUrl
+      input.expiresAt
     )
     await this.productRepository.create(product)
     return {
@@ -38,11 +27,10 @@ export default class CreateProduct {
 type Input = {
   name: string
   description: string
+  type: string
   priceInCents: number
   stockQuantity: number
   promoActive: boolean
-  imageUrl?: PhotoInput
-  type: string
   promoInCents?: number
   promoStartsAt?: Date
   promoEndsAt?: Date
