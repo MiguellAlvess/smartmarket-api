@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client"
 
+import { ProductNotFoundError } from "../../../../src/application/errors/product/index.js"
 import CreateProduct from "../../../../src/application/usecase/product/create-product.js"
 import GetProductById from "../../../../src/application/usecase/product/get-pet-by-id.js"
 import { startPostgresTestDb } from "../../../../src/infra/database/test-db.js"
@@ -56,5 +57,11 @@ describe("Get Product By Id Use Case", () => {
     )
     expect(getProductOutput.promoEndsAt).toEqual(createProductInput.promoEndsAt)
     expect(getProductOutput.expiresAt).toEqual(createProductInput.expiresAt)
+  })
+
+  test("should throw an error when product is not found", async () => {
+    await expect(
+      getProductById.execute({ productId: "non-existing-id" })
+    ).rejects.toBeInstanceOf(ProductNotFoundError)
   })
 })
