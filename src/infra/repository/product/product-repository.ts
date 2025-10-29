@@ -36,4 +36,26 @@ export default class ProductRepositoryDatabase implements ProductRepository {
       },
     })
   }
+
+  async findById(id: string): Promise<Product | null> {
+    const productRow = await prisma.product.findUnique({ where: { id } })
+    if (!productRow) return null
+    const promoInCents = productRow.promoInCents ?? undefined
+    const promoStartsAt = productRow.promoStartsAt ?? undefined
+    const promoEndsAt = productRow.promoEndsAt ?? undefined
+    const expiresAt = productRow.expiresAt ?? undefined
+    return new Product(
+      productRow.id,
+      productRow.name,
+      productRow.description,
+      productRow.type,
+      productRow.priceInCents,
+      promoInCents,
+      productRow.promoActive,
+      promoStartsAt,
+      promoEndsAt,
+      productRow.stockQuantity,
+      expiresAt
+    )
+  }
 }
