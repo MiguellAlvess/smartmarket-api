@@ -35,4 +35,27 @@ describe("Product Repository Database", async () => {
     expect(output).toBeUndefined()
     expect(product.getId()).toBeDefined()
   })
+
+  test("should return a pet of databaseshould return a product from the database", async () => {
+    const product = Product.create(
+      "Test Product",
+      "This is a test product",
+      "OTHER",
+      1500,
+      1200,
+      true,
+      new Date("2024-07-01"),
+      new Date("2024-07-31"),
+      100,
+      new Date("2025-12-01")
+    )
+    const outputCreateProduct = await repository.create(product)
+    const prouctId = product.getId()
+    const outputGetProduct = await repository.findById(prouctId)
+    expect(outputCreateProduct).toBeUndefined()
+    expect(outputGetProduct).toBeDefined()
+    expect(outputGetProduct?.getId()).toBe(prouctId)
+    expect(outputGetProduct?.getName()).toBe("Test Product")
+    expect(outputGetProduct?.getDescription()).toBe("This is a test product")
+  })
 })
