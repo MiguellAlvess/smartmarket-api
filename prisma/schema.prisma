@@ -43,7 +43,6 @@ model Product {
   promoStartsAt DateTime?
   promoEndsAt   DateTime?
   expiresAt     DateTime?
-  imageUrl      String?
   stockQuantity Int         @default(0)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
