@@ -58,4 +58,8 @@ export default class ProductRepositoryDatabase implements ProductRepository {
       expiresAt
     )
   }
+
+  async deleteById(productId: string): Promise<void> {
+    await prisma.product.delete({ where: { id: productId } })
+  }
 }
