@@ -1,3 +1,4 @@
+import { ProductNotFoundError } from "../../errors/product/index.js"
 import { ProductRepository } from "../../ports/repository/product-repository.js"
 
 export default class GetProductById {
@@ -6,7 +7,7 @@ export default class GetProductById {
   async execute(input: Input): Promise<Output> {
     const product = await this.productRepository.findById(input.productId)
     if (!product) {
-      throw new Error("Product not found")
+      throw new ProductNotFoundError()
     }
     return {
       productId: product.getId(),
