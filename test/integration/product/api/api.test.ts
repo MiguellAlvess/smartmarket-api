@@ -104,4 +104,28 @@ describe("Product Endpoints", () => {
     const output = await axios.post("http://localhost:8080/api/products", input)
     expect(output.status).toBe(400)
   })
+
+  test("should return 200 when product is found", async () => {
+    const createProductInput = {
+      name: "Test Product",
+      description: "This is a test product",
+      type: "OTHER",
+      priceInCents: 1500,
+      promoInCents: 1200,
+      promoActive: true,
+      promoStartsAt: new Date("2024-07-01"),
+      promoEndsAt: new Date("2024-07-31"),
+      stockQuantity: 100,
+      expiresAt: new Date("2025-12-01"),
+    }
+    const createProductOutput = await axios.post(
+      "http://localhost:8080/api/products",
+      createProductInput
+    )
+    const productId = createProductOutput.data.productId
+    const product = await axios.get(
+      `http://localhost:8080/api/products/${productId}`
+    )
+    expect(product.status).toBe(200)
+  })
 })
