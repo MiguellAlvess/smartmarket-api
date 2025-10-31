@@ -128,4 +128,12 @@ describe("Product Endpoints", () => {
     )
     expect(product.status).toBe(200)
   })
+
+  test("should return 400 when product id is not valid", async () => {
+    const invalidId = "invalid-id"
+    const product = await axios.get(
+      `http://localhost:8080/api/products/${invalidId}`
+    )
+    expect(product.status).toBe(400)
+  })
 })
