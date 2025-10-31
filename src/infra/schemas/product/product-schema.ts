@@ -27,4 +27,10 @@ export const createProductSchema = z.object({
   expiresAt: z.coerce.date({ message: "Expires at is required" }),
 })
 
+export const getProductByIdSchema = z.object({
+  productId: z.string().uuid({
+    message: "Invalid UUID",
+  }),
+})
+
 type CreateProductDTO = z.infer<typeof createProductSchema>
