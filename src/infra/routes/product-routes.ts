@@ -9,3 +9,5 @@ productRouter.post("/", async (req, res) => {
   const { statusCode, body } = await controller.execute(req)
   res.status(statusCode).send(body)
 })
+
+productRouter.get("/:productId", async (req, res) => {})
