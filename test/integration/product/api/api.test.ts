@@ -123,7 +123,6 @@ describe("Product Endpoints", () => {
       createProductInput
     )
     const productId = createProductOutput.data.productId
-    console.log(productId)
     const product = await axios.get(
       `http://localhost:8080/api/products/${productId}`
     )
@@ -146,8 +145,6 @@ describe("Product Endpoints", () => {
     expect(product.status).toBe(400)
   })
 
-  test("should return 404 when product is not found")
-
   test("should return 200 when product is deleted", async () => {
     const createProductInput = {
       name: "Test Product",
@@ -167,12 +164,45 @@ describe("Product Endpoints", () => {
     )
     const productId = createProductOutput.data.productId
     const productDeleted = await axios.delete(
-      `http://localhost:8080/api/products/${productId}`
+      `http://localhost:8080/api/products/me/${productId}`
     )
     expect(productDeleted.status).toBe(200)
     const product = await axios.get(
       `http://localhost:8080/api/products/${productId}`
     )
     expect(product.status).toBe(404)
+  })
+
+  test("should return 200 when listing all products", async () => {
+    const product1 = {
+      name: "ProductOne",
+      description: "This is a test product",
+      type: "OTHER",
+      priceInCents: 1500,
+      promoInCents: 1200,
+      promoActive: true,
+      promoStartsAt: new Date("2024-07-01"),
+      promoEndsAt: new Date("2024-07-31"),
+      stockQuantity: 100,
+      expiresAt: new Date("2025-12-01"),
+    }
+    const product2 = {
+      name: "ProductOne",
+      description: "This is a test product",
+      type: "OTHER",
+      priceInCents: 1500,
+      promoInCents: 1200,
+      promoActive: true,
+      promoStartsAt: new Date("2024-07-01"),
+      promoEndsAt: new Date("2024-07-31"),
+      stockQuantity: 100,
+      expiresAt: new Date("2025-12-01"),
+    }
+    await axios.post("http://localhost:8080/api/products", product1)
+    await axios.post("http://localhost:8080/api/products", product2)
+    const products = await axios.get("http://localhost:8080/api/products")
+    console.log(products.data)
+    expect(products.status).toBe(200)
+    expect(products.data.products.length).toBeGreaterThanOrEqual(2)
   })
 })
