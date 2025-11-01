@@ -78,4 +78,35 @@ describe("Product Repository Database", async () => {
     const deletedProduct = await repository.findById(prouctId)
     expect(deletedProduct).toBeNull()
   })
+
+  test("should return all products from the database", async () => {
+    const product1 = Product.create(
+      "ProductOne",
+      "This is a test product",
+      "OTHER",
+      1500,
+      1200,
+      true,
+      new Date("2024-07-01"),
+      new Date("2024-07-31"),
+      100,
+      new Date("2025-12-01")
+    )
+    const product2 = Product.create(
+      "ProductTwo",
+      "This is a test product",
+      "OTHER",
+      1500,
+      1200,
+      true,
+      new Date("2024-07-01"),
+      new Date("2024-07-31"),
+      100,
+      new Date("2025-12-01")
+    )
+    await repository.create(product1)
+    await repository.create(product2)
+    const products = await repository.findAll()
+    expect(products.length).toBe(2)
+  })
 })
