@@ -5,8 +5,6 @@ export const productNotFoundResponse = () =>
     message: "Product not found.",
   })
 
-export const productCreatedResponse = (data: unknown) =>
-  http.created({
-    message: "Product created successfully.",
-    data,
-  })
+export const productCreatedResponse = (out: { productId: string }) => {
+  return http.created({ productId: out.productId })
+}
