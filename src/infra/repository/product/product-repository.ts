@@ -1,9 +1,7 @@
-import { ProductType as PrismaProductType } from "@prisma/client"
-import { PrismaClient } from "@prisma/client/extension"
+import { PrismaClient, ProductType as PrismaProductType } from "@prisma/client"
 
 import { ProductRepository } from "../../../application/ports/repository/product-repository.js"
 import Product from "../../../domain/product/entity/product.js"
-import { prisma } from "../../database/prisma.js"
 
 function toPrismaProductType(type: string): PrismaProductType {
   const normalized = type.trim().toUpperCase()
@@ -18,9 +16,9 @@ function toPrismaProductType(type: string): PrismaProductType {
 }
 
 export default class ProductRepositoryDatabase implements ProductRepository {
-  constructor(private database: typeof PrismaClient) {}
+  constructor(private readonly db: PrismaClient) {}
   async create(product: Product): Promise<void> {
-    await prisma.product.create({
+    await this.db.product.create({
       data: {
         id: product.getId(),
         name: product.getName(),
@@ -38,7 +36,7 @@ export default class ProductRepositoryDatabase implements ProductRepository {
   }
 
   async findById(id: string): Promise<Product | null> {
-    const productRow = await prisma.product.findUnique({ where: { id } })
+    const productRow = await this.db.product.findUnique({ where: { id } })
     if (!productRow) return null
     const promoInCents = productRow.promoInCents ?? undefined
     const promoStartsAt = productRow.promoStartsAt ?? undefined
@@ -60,6 +58,29 @@ export default class ProductRepositoryDatabase implements ProductRepository {
   }
 
   async deleteById(productId: string): Promise<void> {
-    await prisma.product.delete({ where: { id: productId } })
+    await this.db.product.delete({ where: { id: productId } })
+  }
+
+  async findAll(): Promise<Product[]> {
+    const productRows = await this.db.product.findMany()
+    return productRows.map((productRow) => {
+      const promoInCents = productRow.promoInCents ?? undefined
+      const promoStartsAt = productRow.promoStartsAt ?? undefined
+      const promoEndsAt = productRow.promoEndsAt ?? undefined
+      const expiresAt = productRow.expiresAt ?? undefined
+      return new Product(
+        productRow.id,
+        productRow.name,
+        productRow.description,
+        productRow.type,
+        productRow.priceInCents,
+        promoInCents,
+        productRow.promoActive,
+        promoStartsAt,
+        promoEndsAt,
+        productRow.stockQuantity,
+        expiresAt
+      )
+    })
   }
 }
