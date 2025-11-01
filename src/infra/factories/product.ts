@@ -1,8 +1,10 @@
 import CreateProduct from "../../application/usecase/product/create-product.js"
 import DeleteProduct from "../../application/usecase/product/delete-product.js"
+import GetAllProductUseCase from "../../application/usecase/product/get-all-products.js"
 import GetProductById from "../../application/usecase/product/get-pet-by-id.js"
 import CreateProductController from "../controller/product/create-product.js"
 import DeleteProductController from "../controller/product/delete-product.js"
+import GetAllProductsController from "../controller/product/get-all-products.js"
 import GetProductByIdController from "../controller/product/get-product-by-id.js"
 import { prisma } from "../database/prisma.js"
 import ProductRepositoryDatabase from "../repository/product/product-repository.js"
@@ -32,4 +34,13 @@ export const makeDeleteProductController = () => {
     deleteProductUseCase
   )
   return deleteProductController
+}
+
+export const makeGetAllProductsController = () => {
+  const productRepository = new ProductRepositoryDatabase(prisma)
+  const getAllProductsUseCase = new GetAllProductUseCase(productRepository)
+  const getAllProductsController = new GetAllProductsController(
+    getAllProductsUseCase
+  )
+  return getAllProductsController
 }

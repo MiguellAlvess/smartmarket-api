@@ -3,6 +3,7 @@ import { Router } from "express"
 import {
   makeCreateProductController,
   makeDeleteProductController,
+  makeGetAllProductsController,
   makeGetProductByIdController,
 } from "../factories/product.js"
 
@@ -27,5 +28,11 @@ productRouter.delete("/me/:productId", async (req, res) => {
   const { statusCode, body } = await deleteProductController.execute({
     params: req.params,
   })
+  res.status(statusCode).send(body)
+})
+
+productRouter.get("/", async (req, res) => {
+  const getAllProductsController = makeGetAllProductsController()
+  const { statusCode, body } = await getAllProductsController.execute()
   res.status(statusCode).send(body)
 })
