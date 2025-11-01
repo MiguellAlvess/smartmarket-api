@@ -7,7 +7,7 @@ export default class GetAllProductsController {
   async execute() {
     try {
       const products = await this.getAllProducts.execute()
-      return http.ok(products)
+      return http.ok({ products })
     } catch (error) {
       console.error(error)
       return http.serverError()
