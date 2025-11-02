@@ -7,11 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  ADMIN
-  STAFF
-}
-
 enum ProductType {
   FOOD
   BEVERAGE
@@ -26,7 +21,6 @@ model User {
   email        String   @unique
   cpf          String   @unique
   passwordHash String
-  role         Role     @default(STAFF)
   imageUrl     String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
