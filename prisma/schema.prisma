@@ -51,12 +51,12 @@ model Product {
   @@index([type])
 }
 
-model Customer {
+model Employee {
   id            String   @id @default(uuid())
   name          String
   cpf           String   @unique
   age           Int
-  customerSince DateTime @default(now())
+  employeeSince DateTime @default(now())
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
