@@ -15,7 +15,7 @@ enum ProductType {
   OTHER
 }
 
-model User {
+model Account {
   id           String   @id @default(uuid())
   name         String
   email        String   @unique
