@@ -9,7 +9,7 @@ export const makeLoginAccountController = () => {
   const accountRepository = new AccountRepositoryDatabase(prisma)
   const bcryptAdapter = new BcryptAdapter()
   const jwtTokenGeneratorAdapter = new JwtTokenGeneratorAdapter(
-    process.env.JWT_SECRET!
+    process.env.ACCESS_TOKEN_SECRET!
   )
   const usecase = new LoginAccount(
     accountRepository,
