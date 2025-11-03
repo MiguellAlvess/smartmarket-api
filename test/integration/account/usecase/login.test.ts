@@ -51,8 +51,8 @@ describe("LoginAccount Use Case", () => {
   test("should throw InvalidCredentialsError when account does not exist", async () => {
     await expect(
       loginAccount.execute({
-        email: "ghost@example.com",
-        password: "AnyPass123",
+        email: "inexistent@example.com",
+        password: "inexistentPassword",
       })
     ).rejects.toBeInstanceOf(InvalidCredentialsError)
   })
