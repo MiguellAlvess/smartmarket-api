@@ -11,3 +11,9 @@ export class InvalidCpfError extends DomainError {
     super("Invalid CPF")
   }
 }
+
+export class InvalidPasswordError extends DomainError {
+  constructor() {
+    super("Invalid CPF")
+  }
+}
