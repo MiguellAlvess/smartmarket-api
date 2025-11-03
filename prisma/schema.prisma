@@ -21,7 +21,6 @@ model Account {
   email        String   @unique
   cpf          String   @unique
   passwordHash String
-  imageUrl     String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
