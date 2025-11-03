@@ -1,8 +1,41 @@
+import { PrismaClient } from "@prisma/client"
 import axios from "axios"
+
+import { BcryptAdapter } from "../../../../src/infra/cryptography/bcrypt-adapter.js"
 
 axios.defaults.validateStatus = () => true
 
 describe("Product Endpoints", () => {
+  const prisma = new PrismaClient()
+  const hasher = new BcryptAdapter()
+  let accessToken: string
+
+  beforeAll(async () => {
+    const passwordHash = await hasher.hash("admin123")
+    await prisma.account.upsert({
+      where: { email: "admin@smartmarket.com" },
+      update: {},
+      create: {
+        name: "Administrador",
+        email: "admin@smartmarket.com",
+        cpf: "000.000.000-00",
+        passwordHash,
+      },
+    })
+
+    const loginInput = { email: "admin@smartmarket.com", password: "admin123" }
+    const loginOutput = await axios.post(
+      "http://localhost:8080/api/accounts/login",
+      loginInput
+    )
+    expect(loginOutput.status).toBe(200)
+    accessToken = loginOutput.data.accessToken
+  })
+
+  afterEach(async () => {
+    await prisma.product.deleteMany({})
+  })
+
   test("should return 201 when product is created", async () => {
     const input = {
       name: "Test Product",
@@ -16,7 +49,11 @@ describe("Product Endpoints", () => {
       stockQuantity: 100,
       expiresAt: new Date("2025-12-01"),
     }
-    const output = await axios.post("http://localhost:8080/api/products", input)
+    const output = await axios.post(
+      "http://localhost:8080/api/products",
+      input,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
     expect(output.status).toBe(201)
   })
 
@@ -33,7 +70,11 @@ describe("Product Endpoints", () => {
       stockQuantity: 100,
       expiresAt: new Date("2025-12-01"),
     }
-    const output = await axios.post("http://localhost:8080/api/products", input)
+    const output = await axios.post(
+      "http://localhost:8080/api/products",
+      input,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
     expect(output.status).toBe(400)
   })
 
@@ -50,7 +91,11 @@ describe("Product Endpoints", () => {
       stockQuantity: 100,
       expiresAt: new Date("2025-12-01"),
     }
-    const output = await axios.post("http://localhost:8080/api/products", input)
+    const output = await axios.post(
+      "http://localhost:8080/api/products",
+      input,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
     expect(output.status).toBe(400)
   })
 
@@ -67,7 +112,11 @@ describe("Product Endpoints", () => {
       stockQuantity: 100,
       expiresAt: new Date("1999-12-01"),
     }
-    const output = await axios.post("http://localhost:8080/api/products", input)
+    const output = await axios.post(
+      "http://localhost:8080/api/products",
+      input,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
     expect(output.status).toBe(400)
   })
 
@@ -84,7 +133,11 @@ describe("Product Endpoints", () => {
       stockQuantity: -10000,
       expiresAt: new Date("1999-12-01"),
     }
-    const output = await axios.post("http://localhost:8080/api/products", input)
+    const output = await axios.post(
+      "http://localhost:8080/api/products",
+      input,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
     expect(output.status).toBe(400)
   })
 
@@ -101,7 +154,11 @@ describe("Product Endpoints", () => {
       stockQuantity: 10,
       expiresAt: new Date("1999-12-01"),
     }
-    const output = await axios.post("http://localhost:8080/api/products", input)
+    const output = await axios.post(
+      "http://localhost:8080/api/products",
+      input,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
     expect(output.status).toBe(400)
   })
 
@@ -120,19 +177,22 @@ describe("Product Endpoints", () => {
     }
     const createProductOutput = await axios.post(
       "http://localhost:8080/api/products",
-      createProductInput
+      createProductInput,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
     )
     const productId = createProductOutput.data.productId
     const product = await axios.get(
-      `http://localhost:8080/api/products/${productId}`
+      `http://localhost:8080/api/products/${productId}`,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
     )
     expect(product.status).toBe(200)
   })
 
-  test("should return 200 when product is found", async () => {
+  test("should return 404 when product is not found", async () => {
     const productId = "5cf9233d-6c2b-4e9a-aeb4-629105b48a36"
     const product = await axios.get(
-      `http://localhost:8080/api/products/${productId}`
+      `http://localhost:8080/api/products/${productId}`,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
     )
     expect(product.status).toBe(404)
   })
@@ -140,7 +200,8 @@ describe("Product Endpoints", () => {
   test("should return 400 when product id is not valid", async () => {
     const invalidId = "invalid-id"
     const product = await axios.get(
-      `http://localhost:8080/api/products/${invalidId}`
+      `http://localhost:8080/api/products/${invalidId}`,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
     )
     expect(product.status).toBe(400)
   })
@@ -160,15 +221,20 @@ describe("Product Endpoints", () => {
     }
     const createProductOutput = await axios.post(
       "http://localhost:8080/api/products",
-      createProductInput
+      createProductInput,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
     )
     const productId = createProductOutput.data.productId
+
     const productDeleted = await axios.delete(
-      `http://localhost:8080/api/products/me/${productId}`
+      `http://localhost:8080/api/products/me/${productId}`,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
     )
     expect(productDeleted.status).toBe(200)
+
     const product = await axios.get(
-      `http://localhost:8080/api/products/${productId}`
+      `http://localhost:8080/api/products/${productId}`,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
     )
     expect(product.status).toBe(404)
   })
@@ -187,7 +253,7 @@ describe("Product Endpoints", () => {
       expiresAt: new Date("2025-12-01"),
     }
     const product2 = {
-      name: "ProductOne",
+      name: "ProductTwo",
       description: "This is a test product",
       type: "OTHER",
       priceInCents: 1500,
@@ -198,10 +264,15 @@ describe("Product Endpoints", () => {
       stockQuantity: 100,
       expiresAt: new Date("2025-12-01"),
     }
-    await axios.post("http://localhost:8080/api/products", product1)
-    await axios.post("http://localhost:8080/api/products", product2)
-    const products = await axios.get("http://localhost:8080/api/products")
-    console.log(products.data)
+    await axios.post("http://localhost:8080/api/products", product1, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    await axios.post("http://localhost:8080/api/products", product2, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    const products = await axios.get("http://localhost:8080/api/products", {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
     expect(products.status).toBe(200)
     expect(products.data.products.length).toBeGreaterThanOrEqual(2)
   })
