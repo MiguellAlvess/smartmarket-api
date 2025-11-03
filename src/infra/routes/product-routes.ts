@@ -1,5 +1,6 @@
 import { Router } from "express"
 
+import { makeAuth } from "../factories/auth.js"
 import {
   makeCreateProductController,
   makeDeleteProductController,
@@ -8,6 +9,8 @@ import {
 } from "../factories/product.js"
 
 export const productRouter = Router()
+const auth = makeAuth()
+productRouter.use(auth)
 
 productRouter.get("/", async (req, res) => {
   const getAllProductsController = makeGetAllProductsController()
