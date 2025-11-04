@@ -1,48 +1,47 @@
 import UUID from "../../product/vo/uuid.js"
+import Cpf from "../vo/cpf.js"
+import Email from "../vo/email.js"
+import Name from "../vo/name.js"
 import { Password } from "../vo/password.js"
 
 export class Account {
-  private id: UUID
-  private name: string
-  private email: string
-  private cpf: string
+  private accountId: UUID
+  private name: Name
+  private email: Email
+  private cpf: Cpf
   private password: Password
 
   constructor(
-    id: string,
+    accountId: string,
     name: string,
     email: string,
     cpf: string,
-    password: Password
+    password: string
   ) {
-    this.id = new UUID(id)
-    this.name = name
-    this.email = email
-    this.cpf = cpf
-    this.password = password
+    this.accountId = new UUID(accountId)
+    this.name = new Name(name)
+    this.email = new Email(email)
+    this.cpf = new Cpf(cpf)
+    this.password = new Password(password)
   }
 
   static create(name: string, email: string, cpf: string, password: Password) {
-    const id = UUID.create().getValue()
-    return new Account(id, name, email, cpf, password)
+    const accountId = UUID.create().getValue()
+    return new Account(accountId, name, email, cpf, password.getValue())
   }
 
   getId() {
-    return this.id.getValue()
+    return this.accountId.getValue()
   }
-
   getName() {
-    return this.name
+    return this.name.getValue()
   }
-
   getEmail() {
-    return this.email
+    return this.email.getValue()
   }
-
   getCpf() {
-    return this.cpf
+    return this.cpf.getValue()
   }
-
   getPasswordHash() {
     return this.password.getValue()
   }
