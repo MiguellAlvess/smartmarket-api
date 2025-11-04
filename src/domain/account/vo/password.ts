@@ -3,7 +3,7 @@ import { InvalidPasswordError } from "../../errors/account/account-errors.js"
 export class Password {
   private value: string
 
-  private constructor(password: string, skipValidation = false) {
+  constructor(password: string, skipValidation = false) {
     if (!skipValidation && !this.validatePassword(password)) {
       throw new InvalidPasswordError()
     }
