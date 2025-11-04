@@ -16,18 +16,21 @@ export class Account {
     name: string,
     email: string,
     cpf: string,
-    password: string
+    password: string,
+    isPasswordHash = false
   ) {
     this.accountId = new UUID(accountId)
     this.name = new Name(name)
     this.email = new Email(email)
     this.cpf = new Cpf(cpf)
-    this.password = new Password(password)
+    this.password = isPasswordHash
+      ? Password.fromHash(password)
+      : new Password(password)
   }
 
   static create(name: string, email: string, cpf: string, password: Password) {
     const accountId = UUID.create().getValue()
-    return new Account(accountId, name, email, cpf, password.getValue())
+    return new Account(accountId, name, email, cpf, password.getValue(), false)
   }
 
   getId() {
