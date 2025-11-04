@@ -19,11 +19,11 @@ export default class LoginAccountController {
           message: error.issues[0]?.message,
         })
       }
-      if (error instanceof DomainError) {
-        return http.badRequest({ message: error.message })
-      }
       if (error instanceof InvalidCredentialsError) {
         return http.unauthorized({ message: error.message })
+      }
+      if (error instanceof DomainError) {
+        return http.badRequest({ message: error.message })
       }
       return http.serverError()
     }
