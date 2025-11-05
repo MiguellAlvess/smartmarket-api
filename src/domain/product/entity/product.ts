@@ -43,23 +43,6 @@ export default class Product {
     this.stock = new Quantity(stock)
   }
 
-  applyPromotion(
-    promoInCents: number | undefined,
-    promoActive: boolean,
-    promoStartsAt: Date | undefined,
-    promoEndsAt: Date | undefined
-  ) {
-    const basePrice = this.pricing.getPriceInCents()
-    const newPricing = new Pricing(
-      basePrice,
-      promoInCents !== undefined ? new Price(promoInCents) : undefined,
-      promoActive,
-      promoStartsAt,
-      promoEndsAt
-    )
-    this.pricing = newPricing
-  }
-
   static create(
     name: string,
     description: string,
@@ -86,6 +69,70 @@ export default class Product {
       stock,
       expiresAt
     )
+  }
+
+  applyPromotion(
+    promoInCents: number | undefined,
+    promoActive: boolean,
+    promoStartsAt: Date | undefined,
+    promoEndsAt: Date | undefined
+  ) {
+    const basePrice = this.pricing.getPriceInCents()
+    const newPricing = new Pricing(
+      basePrice,
+      promoInCents !== undefined ? new Price(promoInCents) : undefined,
+      promoActive,
+      promoStartsAt,
+      promoEndsAt
+    )
+    this.pricing = newPricing
+  }
+
+  update(fields: {
+    name?: string
+    description?: string
+    type?: string
+    priceInCents?: number
+    stockQuantity?: number
+    expiresAt?: Date
+    promoInCents?: number
+    promoActive?: boolean
+    promoStartsAt?: Date
+    promoEndsAt?: Date
+  }) {
+    if (fields.name !== undefined) this.name = new Name(fields.name)
+    if (fields.description !== undefined) this.description = fields.description
+    if (fields.type !== undefined) this.type = new Type(fields.type)
+    if (fields.priceInCents !== undefined) {
+      const newPricing = new Pricing(
+        new Price(fields.priceInCents),
+        this.pricing.getPromoInCents(),
+        this.pricing.isPromoActive(),
+        this.pricing.getPromoStartsAt(),
+        this.pricing.getPromoEndsAt()
+      )
+      this.pricing = newPricing
+    }
+    if (fields.expiresAt !== undefined)
+      this.expiresAt = fields.expiresAt
+        ? new ExpiresAt(fields.expiresAt)
+        : undefined
+    if (fields.stockQuantity !== undefined)
+      this.stock = new Quantity(fields.stockQuantity)
+
+    const promoProvided =
+      fields.promoInCents !== undefined ||
+      fields.promoActive !== undefined ||
+      fields.promoStartsAt !== undefined ||
+      fields.promoEndsAt !== undefined
+    if (promoProvided) {
+      this.applyPromotion(
+        fields.promoInCents ?? this.pricing.getPromoInCents()?.getValue(),
+        fields.promoActive ?? this.pricing.isPromoActive(),
+        fields.promoStartsAt ?? this.pricing.getPromoStartsAt(),
+        fields.promoEndsAt ?? this.pricing.getPromoEndsAt()
+      )
+    }
   }
 
   getId() {
