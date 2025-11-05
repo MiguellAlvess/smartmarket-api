@@ -1,7 +1,9 @@
+import ApplyPromotionUseCase from "../../application/usecase/product/apply-promotion.js"
 import CreateProduct from "../../application/usecase/product/create-product.js"
 import DeleteProduct from "../../application/usecase/product/delete-product.js"
 import GetAllProductUseCase from "../../application/usecase/product/get-all-products.js"
 import GetProductById from "../../application/usecase/product/get-pet-by-id.js"
+import ApplyPromotionController from "../controller/product/apply-promotion.js"
 import CreateProductController from "../controller/product/create-product.js"
 import DeleteProductController from "../controller/product/delete-product.js"
 import GetAllProductsController from "../controller/product/get-all-products.js"
@@ -43,4 +45,13 @@ export const makeGetAllProductsController = () => {
     getAllProductsUseCase
   )
   return getAllProductsController
+}
+
+export const makeApplyPromotionController = () => {
+  const productRepository = new ProductRepositoryDatabase(prisma)
+  const applyPromotionUseCase = new ApplyPromotionUseCase(productRepository)
+  const applyPromotionController = new ApplyPromotionController(
+    applyPromotionUseCase
+  )
+  return applyPromotionController
 }

@@ -2,6 +2,7 @@ import { Router } from "express"
 
 import { makeAuth } from "../factories/auth.js"
 import {
+  makeApplyPromotionController,
   makeCreateProductController,
   makeDeleteProductController,
   makeGetAllProductsController,
@@ -29,6 +30,15 @@ productRouter.get("/:productId", async (req, res) => {
 productRouter.post("/", async (req, res) => {
   const createProductController = makeCreateProductController()
   const { statusCode, body } = await createProductController.execute(req)
+  res.status(statusCode).send(body)
+})
+
+productRouter.patch("/:productId/promotion", async (req, res) => {
+  const applyPromotionController = makeApplyPromotionController()
+  const { statusCode, body } = await applyPromotionController.execute({
+    params: req.params,
+    body: req.body,
+  })
   res.status(statusCode).send(body)
 })
 
