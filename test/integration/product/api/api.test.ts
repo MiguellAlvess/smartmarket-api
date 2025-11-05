@@ -276,4 +276,36 @@ describe("Product Endpoints", () => {
     expect(products.status).toBe(200)
     expect(products.data.products.length).toBeGreaterThanOrEqual(2)
   })
+
+  test("should return 200 when product is updated", async () => {
+    const createInput = {
+      name: "API Prod",
+      description: "API Desc",
+      type: "OTHER",
+      priceInCents: 1000,
+      stockQuantity: 5,
+      promoActive: false,
+      expiresAt: new Date("2026-01-01"),
+    }
+    const createOutput = await axios.post(
+      "http://localhost:8080/api/products",
+      createInput,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
+    expect(createOutput.status).toBe(201)
+    const productId = createOutput.data.productId
+
+    const updateInput = {
+      name: "API Prod Updated",
+      priceInCents: 1200,
+      promoInCents: 1100,
+      promoActive: true,
+    }
+    const updateOutput = await axios.patch(
+      `http://localhost:8080/api/products/${productId}`,
+      updateInput,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
+    expect(updateOutput.status).toBe(200)
+  })
 })
