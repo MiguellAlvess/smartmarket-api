@@ -43,6 +43,23 @@ export default class Product {
     this.stock = new Quantity(stock)
   }
 
+  applyPromotion(
+    promoInCents: number | undefined,
+    promoActive: boolean,
+    promoStartsAt: Date | undefined,
+    promoEndsAt: Date | undefined
+  ) {
+    const basePrice = this.pricing.getPriceInCents()
+    const newPricing = new Pricing(
+      basePrice,
+      promoInCents !== undefined ? new Price(promoInCents) : undefined,
+      promoActive,
+      promoStartsAt,
+      promoEndsAt
+    )
+    this.pricing = newPricing
+  }
+
   static create(
     name: string,
     description: string,
