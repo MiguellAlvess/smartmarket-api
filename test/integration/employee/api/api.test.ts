@@ -228,4 +228,37 @@ describe("Employee Endpoints", () => {
     )
     expect(deleteOutput.status).toBe(200)
   })
+
+  test("should return 200 when return all employees", async () => {
+    const createInput1 = {
+      name: "Employee One",
+      cpf: "111.222.333-44",
+      jobTitle: "Job Title One",
+      age: 28,
+    }
+    const createInput2 = {
+      name: "Employee Two",
+      cpf: "555.666.777-88",
+      jobTitle: "Job Title Two",
+      age: 35,
+    }
+    const createOutput1 = await axios.post(
+      "http://localhost:8080/api/employees",
+      createInput1,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
+    expect(createOutput1.status).toBe(201)
+    const createOutput2 = await axios.post(
+      "http://localhost:8080/api/employees",
+      createInput2,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
+    expect(createOutput2.status).toBe(201)
+    const getAllOutput = await axios.get(
+      "http://localhost:8080/api/employees",
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
+    expect(getAllOutput.status).toBe(200)
+    expect(getAllOutput.data.length).toBe(2)
+  })
 })
