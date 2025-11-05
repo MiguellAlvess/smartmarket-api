@@ -43,12 +43,12 @@ O problema apontado acima requer a construção de um sistema que permita que os
 
 ### Variáveis de Ambiente
 
-Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+- Crie um arquivo `.env` na raiz do projeto, com base no arquivo `.env.example`.
+- Preencha as variáveis de ambiente com os valores corretos para o seu ambiente. Exemplo:
 
-```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/smartmarket?schema=public"
-JWT_SECRET="seu-jwt-secret-aqui"
-PORT=8080
+```
+DATABASE_URL=postgresql:/user:password@localhost:5432/smartmarket
+ACCESS_TOKEN_SECRET=secret1
 ```
 
 ## Instalação
