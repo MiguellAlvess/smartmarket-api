@@ -25,7 +25,7 @@ export default class GetEmployeeByIdController {
         })
       }
       if (error instanceof EmployeeNotFoundError) {
-        return employeeNotFoundResponse({ message: error.message })
+        return employeeNotFoundResponse()
       }
       console.error(error)
       return http.serverError()
