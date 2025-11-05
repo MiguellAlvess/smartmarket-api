@@ -189,4 +189,13 @@ describe("Employee Endpoints", () => {
     )
     expect(getOutput.status).toBe(200)
   })
+
+  test("should return 404 when employee is not found by id", async () => {
+    const nonExistentEmployeeId = "00000000-0000-0000-0000-000000000000"
+    const getOutput = await axios.get(
+      `http://localhost:8080/api/employees/${nonExistentEmployeeId}`,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
+    expect(getOutput.status).toBe(404)
+  })
 })
