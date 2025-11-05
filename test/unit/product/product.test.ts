@@ -40,4 +40,31 @@ describe("Product Entity", () => {
     expect(product.isPromoActive()).toBe(true)
     expect(product.getPromoInCents()?.getValue()).toBe(1500)
   })
+
+  it("should update a valid product", () => {
+    const product = Product.create(
+      "Product",
+      "This is a sample product",
+      "OTHER",
+      2000,
+      undefined,
+      false,
+      undefined,
+      undefined,
+      50,
+      new Date("2025-12-31")
+    )
+    product.update({
+      name: "New Name",
+      description: "Updated description",
+      type: "FOOD",
+      priceInCents: 1800,
+      stockQuantity: 60,
+    })
+    expect(product.getName()).toBe("New Name")
+    expect(product.getDescription()).toBe("Updated description")
+    expect(product.getType()).toBe("FOOD")
+    expect(product.getPriceInCents().getValue()).toBe(1800)
+    expect(product.getStockQuantity()).toBe(60)
+  })
 })
