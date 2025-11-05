@@ -198,4 +198,13 @@ describe("Employee Endpoints", () => {
     )
     expect(getOutput.status).toBe(404)
   })
+
+  test("should return 400 when employeeId is not a valid UUID", async () => {
+    const invalidEmployeeId = "invalid-uuid"
+    const getOutput = await axios.get(
+      `http://localhost:8080/api/employees/${invalidEmployeeId}`,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
+    expect(getOutput.status).toBe(400)
+  })
 })
