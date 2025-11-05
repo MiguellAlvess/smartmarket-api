@@ -7,6 +7,7 @@ import {
   makeDeleteProductController,
   makeGetAllProductsController,
   makeGetProductByIdController,
+  makeUpdateProductController,
 } from "../factories/product.js"
 
 export const productRouter = Router()
@@ -36,6 +37,15 @@ productRouter.post("/", async (req, res) => {
 productRouter.patch("/:productId/promotion", async (req, res) => {
   const applyPromotionController = makeApplyPromotionController()
   const { statusCode, body } = await applyPromotionController.execute({
+    params: req.params,
+    body: req.body,
+  })
+  res.status(statusCode).send(body)
+})
+
+productRouter.patch("/:productId", async (req, res) => {
+  const updateProductController = makeUpdateProductController()
+  const { statusCode, body } = await updateProductController.execute({
     params: req.params,
     body: req.body,
   })
