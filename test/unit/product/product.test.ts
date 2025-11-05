@@ -67,4 +67,23 @@ describe("Product Entity", () => {
     expect(product.getPriceInCents().getValue()).toBe(1800)
     expect(product.getStockQuantity()).toBe(60)
   })
+
+  it("should deactivate promotion", () => {
+    const product = Product.create(
+      "Promo Product",
+      "With promo",
+      "OTHER",
+      2000,
+      1500,
+      true,
+      new Date("2024-08-01"),
+      new Date("2024-08-31"),
+      10,
+      new Date("2025-12-31")
+    )
+    expect(product.isPromoActive()).toBe(true)
+    product.deactivatePromotion()
+    expect(product.isPromoActive()).toBe(false)
+    expect(product.getPromoInCents()?.getValue()).toBe(1500)
+  })
 })
