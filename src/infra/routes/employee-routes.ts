@@ -4,12 +4,19 @@ import { makeAuth } from "../factories/auth.js"
 import {
   makeCreateEmployeeController,
   makeDeleteEmployeeController,
+  makeGetAllEmployeesController,
   makeGetEmployeeByIdController,
 } from "../factories/employee.js"
 
 export const employeeRouter = Router()
 const auth = makeAuth()
 employeeRouter.use(auth)
+
+employeeRouter.get("/", async (req, res) => {
+  const getAllEmployeesController = makeGetAllEmployeesController()
+  const { statusCode, body } = await getAllEmployeesController.execute()
+  res.status(statusCode).send(body)
+})
 
 employeeRouter.get("/:employeeId", async (req, res) => {
   const getEmployeeByIdController = makeGetEmployeeByIdController()
