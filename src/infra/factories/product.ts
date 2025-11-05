@@ -1,11 +1,13 @@
 import ApplyPromotionUseCase from "../../application/usecase/product/apply-promotion.js"
 import CreateProduct from "../../application/usecase/product/create-product.js"
+import DeactivatePromotionUseCase from "../../application/usecase/product/deactivate-promotion.js"
 import DeleteProduct from "../../application/usecase/product/delete-product.js"
 import GetAllProductUseCase from "../../application/usecase/product/get-all-products.js"
 import GetProductById from "../../application/usecase/product/get-pet-by-id.js"
 import UpdateProductUseCase from "../../application/usecase/product/update-product.js"
 import ApplyPromotionController from "../controller/product/apply-promotion.js"
 import CreateProductController from "../controller/product/create-product.js"
+import DeactivatePromotionController from "../controller/product/deactivate-promotion.js"
 import DeleteProductController from "../controller/product/delete-product.js"
 import GetAllProductsController from "../controller/product/get-all-products.js"
 import GetProductByIdController from "../controller/product/get-product-by-id.js"
@@ -65,4 +67,15 @@ export const makeUpdateProductController = () => {
     updateProductUseCase
   )
   return updateProductController
+}
+
+export const makeDeactivatePromotionController = () => {
+  const productRepository = new ProductRepositoryDatabase(prisma)
+  const deactivatePromotionUseCase = new DeactivatePromotionUseCase(
+    productRepository
+  )
+  const deactivatePromotionController = new DeactivatePromotionController(
+    deactivatePromotionUseCase
+  )
+  return deactivatePromotionController
 }

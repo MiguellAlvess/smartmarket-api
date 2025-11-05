@@ -4,6 +4,7 @@ import { makeAuth } from "../factories/auth.js"
 import {
   makeApplyPromotionController,
   makeCreateProductController,
+  makeDeactivatePromotionController,
   makeDeleteProductController,
   makeGetAllProductsController,
   makeGetProductByIdController,
@@ -39,6 +40,14 @@ productRouter.patch("/:productId/promotion", async (req, res) => {
   const { statusCode, body } = await applyPromotionController.execute({
     params: req.params,
     body: req.body,
+  })
+  res.status(statusCode).send(body)
+})
+
+productRouter.delete("/:productId/promotion", async (req, res) => {
+  const deactivatePromotionController = makeDeactivatePromotionController()
+  const { statusCode, body } = await deactivatePromotionController.execute({
+    params: req.params,
   })
   res.status(statusCode).send(body)
 })
