@@ -1,9 +1,9 @@
 import cors from "cors"
 import express from "express"
 
-import { accountRouter } from "./infra/routes/account-routes.js"
-import { employeeRouter } from "./infra/routes/employee-routes.js"
-import { productRouter } from "./infra/routes/product-routes.js"
+import { accountRouter } from "../routes/account-routes.js"
+import { employeeRouter } from "../routes/employee-routes.js"
+import { productRouter } from "../routes/product-routes.js"
 
 const app = express()
 
