@@ -4,14 +4,14 @@ import { ProductNotFoundError } from "../../../application/errors/product/index.
 import DeleteProduct from "../../../application/usecase/product/delete-product.js"
 import { http } from "../../http/http.js"
 import { productNotFoundResponse } from "../../http/product-response.js"
-import { getProductByIdSchema } from "../../schemas/product/product-schema.js"
+import { deleteProductParamsSchema } from "../../schemas/product/product-schema.js"
 
 export default class DeleteProductController {
   constructor(private readonly deleteProduct: DeleteProduct) {}
 
   async execute(httpRequest: HttpRequest) {
     try {
-      const { productId } = await getProductByIdSchema.parseAsync({
+      const { productId } = await deleteProductParamsSchema.parseAsync({
         productId: httpRequest.params?.productId,
       })
       const product = await this.deleteProduct.execute({ productId })

@@ -33,4 +33,8 @@ export const getProductByIdSchema = z.object({
   }),
 })
 
+export const deleteProductParamsSchema = z.object({
+  productId: z.string().uuid({ message: "Invalid UUID" }),
+})
+
 type CreateProductDTO = z.infer<typeof createProductSchema>
