@@ -62,4 +62,23 @@ describe("Employee Repository", () => {
     expect(outputDeleteEmployee).toBeUndefined()
     expect(outputGetEmployee).toBeNull()
   })
+
+  test("should return all employees from the database", async () => {
+    const employee1 = Employee.create(
+      "John Doe",
+      "123.456.789-00",
+      30,
+      "Software Engineer"
+    )
+    const employee2 = Employee.create(
+      "Jane Smith",
+      "987.654.321-00",
+      28,
+      "Product Manager"
+    )
+    await repository.create(employee1)
+    await repository.create(employee2)
+    const employees = await repository.findAll()
+    expect(employees.length).toBe(2)
+  })
 })
