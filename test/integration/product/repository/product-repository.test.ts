@@ -36,6 +36,43 @@ describe("Product Repository Database", async () => {
     expect(product.getId()).toBeDefined()
   })
 
+  test("should update a product in the database", async () => {
+    const product = Product.create(
+      "Test Product",
+      "This is a test product",
+      "OTHER",
+      1500,
+      undefined,
+      false,
+      undefined,
+      undefined,
+      100,
+      new Date("2025-12-01")
+    )
+    await repository.create(product)
+
+    product.update({
+      name: "Updated Product",
+      description: "Updated description",
+      type: "FOOD",
+      priceInCents: 2000,
+      stockQuantity: 80,
+      promoInCents: 1800,
+      promoActive: true,
+    })
+    await repository.update(product)
+
+    const updated = await repository.findById(product.getId())
+    expect(updated).toBeDefined()
+    expect(updated?.getName()).toBe("Updated Product")
+    expect(updated?.getDescription()).toBe("Updated description")
+    expect(updated?.getType()).toBe("FOOD")
+    expect(updated?.getPriceInCents().getValue()).toBe(2000)
+    expect(updated?.getStockQuantity()).toBe(80)
+    expect(updated?.isPromoActive()).toBe(true)
+    expect(updated?.getPromoInCents()?.getValue()).toBe(1800)
+  })
+
   test("should return a pet of databaseshould return a product from the database", async () => {
     const product = Product.create(
       "Test Product",
