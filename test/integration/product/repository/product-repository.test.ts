@@ -73,6 +73,27 @@ describe("Product Repository Database", async () => {
     expect(updated?.getPromoInCents()?.getValue()).toBe(1800)
   })
 
+  test("should deactivate promotion in the database", async () => {
+    const product = Product.create(
+      "Test Product",
+      "This is a test product",
+      "OTHER",
+      1500,
+      1200,
+      true,
+      new Date("2024-07-01"),
+      new Date("2024-07-31"),
+      100,
+      new Date("2025-12-01")
+    )
+    await repository.create(product)
+    product.deactivatePromotion()
+    await repository.update(product)
+    const updated = await repository.findById(product.getId())
+    expect(updated?.isPromoActive()).toBe(false)
+    expect(updated?.getPromoInCents()?.getValue()).toBe(1200)
+  })
+
   test("should return a pet of databaseshould return a product from the database", async () => {
     const product = Product.create(
       "Test Product",
