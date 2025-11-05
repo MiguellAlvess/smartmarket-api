@@ -17,4 +17,27 @@ describe("Product Entity", () => {
     expect(product.getName()).toBe("Product")
     expect(product.isPromoActive()).toBe(true)
   })
+
+  it("should apply promotion on existing product", () => {
+    const product = Product.create(
+      "Product",
+      "This is a sample product",
+      "OTHER",
+      2000,
+      undefined,
+      false,
+      undefined,
+      undefined,
+      50,
+      new Date("2025-12-31")
+    )
+    product.applyPromotion(
+      1500,
+      true,
+      new Date("2024-08-01"),
+      new Date("2024-08-31")
+    )
+    expect(product.isPromoActive()).toBe(true)
+    expect(product.getPromoInCents()?.getValue()).toBe(1500)
+  })
 })
