@@ -47,4 +47,17 @@ export default class EmployeeRepositoryDatabase implements EmployeeRepository {
       employeeRow.jobTitle
     )
   }
+  async findAll(): Promise<Employee[]> {
+    const employeeRows = await this.db.employee.findMany()
+    return employeeRows.map(
+      (employeeRow) =>
+        new Employee(
+          employeeRow.id,
+          employeeRow.name,
+          employeeRow.cpf,
+          employeeRow.age,
+          employeeRow.jobTitle
+        )
+    )
+  }
 }

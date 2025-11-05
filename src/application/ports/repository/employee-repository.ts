@@ -5,4 +5,5 @@ export interface EmployeeRepository {
   deleteById(employeeId: string): Promise<void>
   findByCpf(cpf: string): Promise<Employee | null>
   findById(employeeId: string): Promise<Employee | null>
+  findAll(): Promise<Employee[]>
 }
