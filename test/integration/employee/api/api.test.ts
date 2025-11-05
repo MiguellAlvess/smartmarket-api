@@ -168,4 +168,25 @@ describe("Employee Endpoints", () => {
     )
     expect(secondOutput.status).toBe(409)
   })
+
+  test("should return 200 when employee is found by id", async () => {
+    const createInput = {
+      name: "Alice Johnson",
+      cpf: "987.654.321-00",
+      jobTitle: "Designer",
+      age: 25,
+    }
+    const createOutput = await axios.post(
+      "http://localhost:8080/api/employees",
+      createInput,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
+    expect(createOutput.status).toBe(201)
+    const employeeId = createOutput.data.employeeId
+    const getOutput = await axios.get(
+      `http://localhost:8080/api/employees/${employeeId}`,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
+    expect(getOutput.status).toBe(200)
+  })
 })
