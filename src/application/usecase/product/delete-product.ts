@@ -13,6 +13,6 @@ export default class DeleteProduct {
   }
 }
 
-interface Input {
+type Input = {
   productId: string
 }
