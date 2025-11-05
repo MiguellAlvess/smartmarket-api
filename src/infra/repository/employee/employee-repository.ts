@@ -22,6 +22,18 @@ export default class EmployeeRepositoryDatabase implements EmployeeRepository {
     await this.db.employee.delete({ where: { id: employeeId } })
   }
 
+  async update(employee: Employee): Promise<void> {
+    await this.db.employee.update({
+      where: { id: employee.getId() },
+      data: {
+        name: employee.getName(),
+        cpf: employee.getCpf(),
+        age: employee.getAge(),
+        jobTitle: employee.getJobTitle(),
+      },
+    })
+  }
+
   async findByCpf(cpf: string): Promise<Employee | null> {
     const employeeRow = await this.db.employee.findUnique({ where: { cpf } })
     if (!employeeRow) return null
