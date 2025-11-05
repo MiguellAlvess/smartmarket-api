@@ -6,6 +6,7 @@ import {
   makeDeleteEmployeeController,
   makeGetAllEmployeesController,
   makeGetEmployeeByIdController,
+  makeUpdateEmployeeController,
 } from "../factories/employee.js"
 
 export const employeeRouter = Router()
@@ -29,6 +30,15 @@ employeeRouter.get("/:employeeId", async (req, res) => {
 employeeRouter.post("/", async (req, res) => {
   const createEmployeeController = makeCreateEmployeeController()
   const { statusCode, body } = await createEmployeeController.execute(req)
+  res.status(statusCode).send(body)
+})
+
+employeeRouter.patch("/:employeeId", async (req, res) => {
+  const updateEmployeeController = makeUpdateEmployeeController()
+  const { statusCode, body } = await updateEmployeeController.execute({
+    params: req.params,
+    body: req.body,
+  })
   res.status(statusCode).send(body)
 })
 
