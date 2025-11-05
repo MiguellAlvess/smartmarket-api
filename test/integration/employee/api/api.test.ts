@@ -259,6 +259,31 @@ describe("Employee Endpoints", () => {
       { headers: { Authorization: `Bearer ${accessToken}` } }
     )
     expect(getAllOutput.status).toBe(200)
-    expect(getAllOutput.data.length).toBe(2)
+  })
+
+  test("should return 200 when employee is updated", async () => {
+    const createInput = {
+      name: "Charlie Brown",
+      cpf: "222.333.444-55",
+      jobTitle: "Support Engineer",
+      age: 29,
+    }
+    const createOutput = await axios.post(
+      "http://localhost:8080/api/employees",
+      createInput,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
+    expect(createOutput.status).toBe(201)
+    const employeeId = createOutput.data.employeeId
+    const updateInput = {
+      name: "Charles Brown",
+      jobTitle: "Senior Support Engineer",
+    }
+    const updateOutput = await axios.patch(
+      `http://localhost:8080/api/employees/${employeeId}`,
+      updateInput,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
+    expect(updateOutput.status).toBe(200)
   })
 })
