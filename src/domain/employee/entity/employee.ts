@@ -30,6 +30,18 @@ export class Employee {
     return new Employee(employeeId, name, cpf, age, jobTitle)
   }
 
+  update(data: {
+    name?: string
+    cpf?: string
+    age?: number
+    jobTitle?: string
+  }) {
+    if (data.name !== undefined) this.name = new Name(data.name)
+    if (data.cpf !== undefined) this.cpf = new Cpf(data.cpf)
+    if (data.age !== undefined) this.age = new Age(data.age)
+    if (data.jobTitle !== undefined) this.jobTitle = new JobTitle(data.jobTitle)
+  }
+
   getId() {
     return this.employeeId.getValue()
   }
