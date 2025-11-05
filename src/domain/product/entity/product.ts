@@ -135,6 +135,18 @@ export default class Product {
     }
   }
 
+  deactivatePromotion() {
+    const basePrice = this.pricing.getPriceInCents()
+    const newPricing = new Pricing(
+      basePrice,
+      this.pricing.getPromoInCents(),
+      false,
+      this.pricing.getPromoStartsAt(),
+      this.pricing.getPromoEndsAt()
+    )
+    this.pricing = newPricing
+  }
+
   getId() {
     return this.productId.getValue()
   }
