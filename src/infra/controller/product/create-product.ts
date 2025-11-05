@@ -9,8 +9,7 @@ import { createProductSchema } from "../../schemas/product/product-schema.js"
 export default class CreateProductController {
   constructor(private readonly createProduct: CreateProduct) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async execute(httpRequest: any) {
+  async execute(httpRequest: HttpRequest) {
     try {
       const params = await createProductSchema.parseAsync(httpRequest.body)
       const productCreated = await this.createProduct.execute(params)
@@ -27,5 +26,20 @@ export default class CreateProductController {
       console.error(error)
       return http.serverError()
     }
+  }
+}
+
+type HttpRequest = {
+  body?: {
+    name: string
+    description: string
+    priceInCents: number
+    promoInCents?: number
+    promoActive?: boolean
+    type: string
+    promoStartsAt?: Date
+    promoEndsAt?: Date
+    expiresAt: Date
+    stockQuantity: number
   }
 }
