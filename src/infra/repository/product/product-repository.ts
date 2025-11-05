@@ -17,6 +17,7 @@ function toPrismaProductType(type: string): PrismaProductType {
 
 export default class ProductRepositoryDatabase implements ProductRepository {
   constructor(private readonly db: PrismaClient) {}
+
   async create(product: Product): Promise<void> {
     await this.db.product.create({
       data: {
@@ -30,6 +31,28 @@ export default class ProductRepositoryDatabase implements ProductRepository {
         promoStartsAt: product.getPromoStartsAt(),
         promoEndsAt: product.getPromoEndsAt(),
         expiresAt: product.getExpiresAt(),
+        stockQuantity: product.getStockQuantity(),
+      },
+    })
+  }
+
+  async deleteById(productId: string): Promise<void> {
+    await this.db.product.delete({ where: { id: productId } })
+  }
+
+  async update(product: Product): Promise<void> {
+    await this.db.product.update({
+      where: { id: product.getId() },
+      data: {
+        name: product.getName(),
+        description: product.getDescription(),
+        type: toPrismaProductType(product.getType()),
+        priceInCents: product.getPriceInCents().getValue(),
+        promoInCents: product.getPromoInCents()?.getValue() ?? null,
+        promoActive: product.isPromoActive(),
+        promoStartsAt: product.getPromoStartsAt() ?? null,
+        promoEndsAt: product.getPromoEndsAt() ?? null,
+        expiresAt: product.getExpiresAt() ?? null,
         stockQuantity: product.getStockQuantity(),
       },
     })
@@ -55,10 +78,6 @@ export default class ProductRepositoryDatabase implements ProductRepository {
       productRow.stockQuantity,
       expiresAt
     )
-  }
-
-  async deleteById(productId: string): Promise<void> {
-    await this.db.product.delete({ where: { id: productId } })
   }
 
   async findAll(): Promise<Product[]> {
