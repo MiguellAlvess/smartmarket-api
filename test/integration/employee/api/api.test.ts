@@ -207,4 +207,25 @@ describe("Employee Endpoints", () => {
     )
     expect(getOutput.status).toBe(400)
   })
+
+  test("should return 200 when employee is deleted", async () => {
+    const createInput = {
+      name: "Bob Williams",
+      cpf: "555.666.777-88",
+      jobTitle: "QA Engineer",
+      age: 32,
+    }
+    const createOutput = await axios.post(
+      "http://localhost:8080/api/employees",
+      createInput,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
+    expect(createOutput.status).toBe(201)
+    const employeeId = createOutput.data.employeeId
+    const deleteOutput = await axios.delete(
+      `http://localhost:8080/api/employees/${employeeId}`,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
+    expect(deleteOutput.status).toBe(200)
+  })
 })
