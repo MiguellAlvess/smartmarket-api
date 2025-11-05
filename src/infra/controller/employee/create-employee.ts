@@ -9,7 +9,7 @@ import { createEmployeeSchema } from "../../schemas/employee/employee-schema.js"
 export default class CreateEmployeeController {
   constructor(private createEmployeeUseCase: CreateEmployeeUseCase) {}
 
-  async execute(httpRequest: any) {
+  async execute(httpRequest: HttpRequest) {
     try {
       const params = await createEmployeeSchema.parseAsync(httpRequest.body)
       const employeeCreated = await this.createEmployeeUseCase.execute(params)
@@ -29,5 +29,14 @@ export default class CreateEmployeeController {
       console.error(error)
       return http.serverError()
     }
+  }
+}
+
+type HttpRequest = {
+  body?: {
+    name: string
+    cpf: string
+    age: number
+    jobTitle: string
   }
 }
