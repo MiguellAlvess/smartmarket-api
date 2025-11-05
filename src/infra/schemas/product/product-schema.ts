@@ -37,4 +37,15 @@ export const deleteProductParamsSchema = z.object({
   productId: z.string().uuid({ message: "Invalid UUID" }),
 })
 
+export const applyPromotionParamsSchema = z.object({
+  productId: z.string().uuid({ message: "Invalid UUID" }),
+})
+
+export const applyPromotionBodySchema = z.object({
+  promoInCents: z.number().optional(),
+  promoActive: z.boolean(),
+  promoStartsAt: z.coerce.date().optional(),
+  promoEndsAt: z.coerce.date().optional(),
+})
+
 type CreateProductDTO = z.infer<typeof createProductSchema>
