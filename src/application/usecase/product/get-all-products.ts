@@ -11,6 +11,7 @@ export default class GetAllProductUseCase {
       description: product.getDescription(),
       type: product.getType(),
       priceInCents: product.getPriceInCents().getValue(),
+      effectivePriceInCents: product.getEffectivePriceInCents().getValue(),
       stockQuantity: product.getStockQuantity(),
       promoActive: product.isPromoActive(),
       promoInCents: product.getPromoInCents()?.getValue(),
@@ -28,6 +29,7 @@ type Output = {
   description: string
   type: string
   priceInCents: number
+  effectivePriceInCents: number
   stockQuantity: number
   promoActive: boolean
   promoInCents?: number

@@ -171,6 +171,10 @@ export default class Product {
     return this.pricing.getPriceInCents()
   }
 
+  getEffectivePriceInCents() {
+    return this.pricing.getEffectivePriceInCents()
+  }
+
   isPromoActive() {
     return this.pricing.isPromoActive()
   }

@@ -15,6 +15,7 @@ export default class GetProductById {
       description: product.getDescription(),
       type: product.getType(),
       priceInCents: product.getPriceInCents().getValue(),
+      effectivePriceInCents: product.getEffectivePriceInCents().getValue(),
       stockQuantity: product.getStockQuantity(),
       promoActive: product.isPromoActive(),
       promoInCents: product.getPromoInCents()?.getValue(),
