@@ -308,4 +308,31 @@ describe("Product Endpoints", () => {
     )
     expect(updateOutput.status).toBe(200)
   })
+
+  test("should return 200 when promotion is deactivated", async () => {
+    const createInput = {
+      name: "API Promo",
+      description: "API Promo Desc",
+      type: "OTHER",
+      priceInCents: 1000,
+      stockQuantity: 5,
+      promoInCents: 900,
+      promoActive: true,
+      promoStartsAt: new Date("2025-01-01"),
+      promoEndsAt: new Date("2025-01-31"),
+      expiresAt: new Date("2026-01-01"),
+    }
+    const createOutput = await axios.post(
+      "http://localhost:8080/api/products",
+      createInput,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
+    const productId = createOutput.data.productId
+
+    const deactivateOutput = await axios.delete(
+      `http://localhost:8080/api/products/${productId}/promotion`,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
+    expect(deactivateOutput.status).toBe(200)
+  })
 })
