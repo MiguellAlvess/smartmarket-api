@@ -17,6 +17,7 @@ describe("Employee Repository", () => {
   afterEach(async () => {
     await prisma.employee.deleteMany({})
   })
+
   test("should create a new product successfully in database", async () => {
     const employee = Employee.create(
       "John Doe",
@@ -27,5 +28,22 @@ describe("Employee Repository", () => {
     const output = await repository.create(employee)
     expect(output).toBeUndefined()
     expect(employee.getId()).toBeDefined()
+  })
+
+  test("should return an employee from the database", async () => {
+    const employee = Employee.create(
+      "John Doe",
+      "123.456.789-00",
+      30,
+      "Software Engineer"
+    )
+    const outputCreateEmployee = await repository.create(employee)
+    const employeeId = employee.getId()
+    const outputGetEmployee = await repository.findById(employeeId)
+    expect(outputCreateEmployee).toBeUndefined()
+    expect(outputGetEmployee).toBeDefined()
+    expect(outputGetEmployee?.getId()).toBe(employeeId)
+    expect(outputGetEmployee?.getName()).toBe("John Doe")
+    expect(outputGetEmployee?.getCpf()).toBe("123.456.789-00")
   })
 })
