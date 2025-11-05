@@ -46,4 +46,20 @@ describe("Employee Repository", () => {
     expect(outputGetEmployee?.getName()).toBe("John Doe")
     expect(outputGetEmployee?.getCpf()).toBe("123.456.789-00")
   })
+
+  test("should delete an employee from the database", async () => {
+    const employee = Employee.create(
+      "John Doe",
+      "123.456.789-00",
+      30,
+      "Software Engineer"
+    )
+    const outputCreateEmployee = await repository.create(employee)
+    const employeeId = employee.getId()
+    const outputDeleteEmployee = await repository.deleteById(employeeId)
+    const outputGetEmployee = await repository.findById(employeeId)
+    expect(outputCreateEmployee).toBeUndefined()
+    expect(outputDeleteEmployee).toBeUndefined()
+    expect(outputGetEmployee).toBeNull()
+  })
 })
