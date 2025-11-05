@@ -21,3 +21,9 @@ export const createEmployeeSchema = z.object({
       message: "Employee age seems invalid",
     }),
 })
+
+export const getEmployeeByIdSchema = z.object({
+  employeeId: z.string().uuid({
+    message: "Invalid UUID",
+  }),
+})
