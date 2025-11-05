@@ -3,6 +3,7 @@ import { Router } from "express"
 import { makeAuth } from "../factories/auth.js"
 import {
   makeCreateEmployeeController,
+  makeDeleteEmployeeController,
   makeGetEmployeeByIdController,
 } from "../factories/employee.js"
 
@@ -21,5 +22,13 @@ employeeRouter.get("/:employeeId", async (req, res) => {
 employeeRouter.post("/", async (req, res) => {
   const createEmployeeController = makeCreateEmployeeController()
   const { statusCode, body } = await createEmployeeController.execute(req)
+  res.status(statusCode).send(body)
+})
+
+employeeRouter.delete("/:employeeId", async (req, res) => {
+  const deleteEmployeeController = makeDeleteEmployeeController()
+  const { statusCode, body } = await deleteEmployeeController.execute({
+    params: req.params,
+  })
   res.status(statusCode).send(body)
 })
