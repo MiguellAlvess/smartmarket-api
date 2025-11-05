@@ -186,6 +186,7 @@ describe("Product Endpoints", () => {
       { headers: { Authorization: `Bearer ${accessToken}` } }
     )
     expect(product.status).toBe(200)
+    expect(product.data.effectivePriceInCents).toBe(1200)
   })
 
   test("should return 404 when product is not found", async () => {
@@ -275,6 +276,10 @@ describe("Product Endpoints", () => {
     })
     expect(products.status).toBe(200)
     expect(products.data.products.length).toBeGreaterThanOrEqual(2)
+    for (const p of products.data.products) {
+      expect(p.effectivePriceInCents).toBeDefined()
+      expect(p.effectivePriceInCents).toBe(p.promoInCents ?? p.priceInCents)
+    }
   })
 
   test("should return 200 when product is updated", async () => {

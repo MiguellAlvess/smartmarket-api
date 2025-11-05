@@ -52,5 +52,9 @@ describe("Get All Products Use Case ", () => {
     await createProduct.execute(createProductInput2)
     const getAllProductsOutput = await getAllProducts.execute()
     expect(getAllProductsOutput.length).toBe(2)
+    for (const p of getAllProductsOutput) {
+      expect(p.effectivePriceInCents).toBeDefined()
+      expect(p.effectivePriceInCents).toBe(p.promoInCents ?? p.priceInCents)
+    }
   })
 })

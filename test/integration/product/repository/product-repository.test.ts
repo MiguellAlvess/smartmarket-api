@@ -71,6 +71,7 @@ describe("Product Repository Database", async () => {
     expect(updated?.getStockQuantity()).toBe(80)
     expect(updated?.isPromoActive()).toBe(true)
     expect(updated?.getPromoInCents()?.getValue()).toBe(1800)
+    expect(updated?.getEffectivePriceInCents().getValue()).toBe(1800)
   })
 
   test("should deactivate promotion in the database", async () => {
@@ -92,6 +93,7 @@ describe("Product Repository Database", async () => {
     const updated = await repository.findById(product.getId())
     expect(updated?.isPromoActive()).toBe(false)
     expect(updated?.getPromoInCents()?.getValue()).toBe(1200)
+    expect(updated?.getEffectivePriceInCents().getValue()).toBe(1500)
   })
 
   test("should return a pet of databaseshould return a product from the database", async () => {
@@ -115,6 +117,7 @@ describe("Product Repository Database", async () => {
     expect(outputGetProduct?.getId()).toBe(prouctId)
     expect(outputGetProduct?.getName()).toBe("Test Product")
     expect(outputGetProduct?.getDescription()).toBe("This is a test product")
+    expect(outputGetProduct?.getEffectivePriceInCents().getValue()).toBe(1200)
   })
 
   test("should delete a product from the database", async () => {

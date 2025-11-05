@@ -39,6 +39,7 @@ describe("Product Entity", () => {
     )
     expect(product.isPromoActive()).toBe(true)
     expect(product.getPromoInCents()?.getValue()).toBe(1500)
+    expect(product.getEffectivePriceInCents().getValue()).toBe(1500)
   })
 
   it("should update a valid product", () => {
@@ -85,5 +86,6 @@ describe("Product Entity", () => {
     product.deactivatePromotion()
     expect(product.isPromoActive()).toBe(false)
     expect(product.getPromoInCents()?.getValue()).toBe(1500)
+    expect(product.getEffectivePriceInCents().getValue()).toBe(2000)
   })
 })

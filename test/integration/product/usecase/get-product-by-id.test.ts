@@ -47,6 +47,11 @@ describe("Get Product By Id Use Case", () => {
     expect(getProductOutput.description).toBe(createProductInput.description)
     expect(getProductOutput.type).toBe(createProductInput.type)
     expect(getProductOutput.priceInCents).toBe(createProductInput.priceInCents)
+    expect(getProductOutput.effectivePriceInCents).toBe(
+      createProductInput.promoActive && createProductInput.promoInCents
+        ? createProductInput.promoInCents
+        : createProductInput.priceInCents
+    )
     expect(getProductOutput.stockQuantity).toBe(
       createProductInput.stockQuantity
     )
