@@ -30,6 +30,31 @@ describe("Employee Repository", () => {
     expect(employee.getId()).toBeDefined()
   })
 
+  test("should update an employee in the database", async () => {
+    const employee = Employee.create(
+      "John Doe",
+      "123.456.789-00",
+      30,
+      "Software Engineer"
+    )
+    const outputCreateEmployee = await repository.create(employee)
+    employee.update({
+      name: "Jane Smith",
+      cpf: "987.654.321-00",
+      age: 28,
+      jobTitle: "Product Manager",
+    })
+    const outputUpdateEmployee = await repository.update(employee)
+    const updatedEmployee = await repository.findById(employee.getId())
+    expect(outputCreateEmployee).toBeUndefined()
+    expect(outputUpdateEmployee).toBeUndefined()
+    expect(updatedEmployee).toBeDefined()
+    expect(updatedEmployee?.getName()).toBe("Jane Smith")
+    expect(updatedEmployee?.getCpf()).toBe("987.654.321-00")
+    expect(updatedEmployee?.getAge()).toBe(28)
+    expect(updatedEmployee?.getJobTitle()).toBe("Product Manager")
+  })
+
   test("should return an employee from the database", async () => {
     const employee = Employee.create(
       "John Doe",
