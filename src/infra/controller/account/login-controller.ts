@@ -8,9 +8,9 @@ import { loginSchema } from "../../schemas/account/account-schema.js"
 
 export default class LoginAccountController {
   constructor(private readonly login: LoginAccount) {}
-  async execute(req: any) {
+  async execute(httpRequest: any) {
     try {
-      const params = await loginSchema.parseAsync(req.body)
+      const params = await loginSchema.parseAsync(httpRequest.body)
       const output = await this.login.execute(params)
       return http.ok(output)
     } catch (error) {
@@ -27,5 +27,12 @@ export default class LoginAccountController {
       }
       return http.serverError()
     }
+  }
+}
+
+type HttpRequest = {
+  body?: {
+    email: string
+    password: string
   }
 }
