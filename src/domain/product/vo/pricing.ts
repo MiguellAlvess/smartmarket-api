@@ -48,16 +48,14 @@ export default class Pricing {
     return this.promoEndsAt
   }
 
-  isCurrentlyActive(now: Date = new Date()) {
+  isCurrentlyActive() {
     if (!this.promoActive) return false
     if (!this.promoInCents) return false
-    if (this.promoStartsAt && now < this.promoStartsAt) return false
-    if (this.promoEndsAt && now > this.promoEndsAt) return false
     return true
   }
 
-  getEffectivePriceInCents(now: Date = new Date()) {
-    if (this.isCurrentlyActive(now) && this.promoInCents) {
+  getEffectivePriceInCents() {
+    if (this.isCurrentlyActive() && this.promoInCents) {
       return this.promoInCents
     }
     return this.priceInCents
