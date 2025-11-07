@@ -2,7 +2,7 @@
 
 Projeto acadêmico desenvolvido para a cadeira de Criar Serviços Web com Rest.
 
-API REST para gerenciamento administrativo de supermercado, permitindo cadastro de produtos, funcionários, autenticação e controle de promoções.
+API para gerenciamento administrativo de supermercado, permitindo cadastro de produtos, funcionários, autenticação e controle de promoções.
 
 ## Descrição do projeto
 
