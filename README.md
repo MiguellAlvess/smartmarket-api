@@ -149,7 +149,7 @@ npm test
 ### Testes com cobertura
 
 ```bash
-pnpm test --coverage
+npm run test:coverage
 ```
 
 ## Estrutura da API
